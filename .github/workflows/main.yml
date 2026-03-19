@@ -1,0 +1,22 @@
+name: generate pacman game
+on:
+  schedule:
+    - cron: "0 */24 * * *" # Roda a cada 24 horas
+  workflow_dispatch: # Permite rodar manualmente
+  push:
+    branches:
+      - main
+
+jobs:
+  generate:
+    permissions: 
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: abozanona/pacman-contribution-graph@master
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          # A animação será salva em uma branch separada (output) para não sujar a main
+          output_branch: output
+          output_svg_path: dist/pacman.svg
